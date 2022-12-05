@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { loginRequest } from "../src/redux/todoActionSlice";
+import { loginRequest } from "../src/module/todoActionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -37,10 +37,8 @@ export default function Home() {
     console.log(e);
   };
   useEffect(() => {
-    console.log(user);
     if (user.userid !== undefined) {
-      console.log("hi");
-      router.push("/todo/todoList", `/todo/${user.userid}`);
+      router.push("/todo/authenticated", `/${user.userid}`);
     }
   }, [user]);
   return (

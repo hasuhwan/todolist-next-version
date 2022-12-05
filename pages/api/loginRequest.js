@@ -9,6 +9,5 @@ export default function loginRequest(req, res) {
   if (user !== undefined) {
     delete user.password;
   }
-  console.log(user);
   res.status(200).json(user);
 }

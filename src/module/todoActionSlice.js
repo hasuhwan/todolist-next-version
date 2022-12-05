@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-let todoId = 2;
+let todoId = 4;
 const loginRequest = createAsyncThunk(
   "todoActionSlice/loginRequest",
   async (data) => {
@@ -15,13 +15,27 @@ const loginRequest = createAsyncThunk(
     }
   }
 );
+const removeRequest = createAsyncThunk(
+  "todoActionSlice/removeRequest",
+  async (data) => {
+    try {
+      const response = await axios
+        .delete(process.env.NEXT_PUBLIC_API_URL + "api/removeRequest", {
+          data: data,
+        })
+        .then((data) => console.log(data));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+);
 
 const todoActionSlice = createSlice({
   name: "todoActionSlice",
   initialState: {},
   reducers: {
     add: (state, action) => {
-      state.todo = state.todo.concat({ id: id++, text: action.payload });
+      state.todo = state.todo.concat({ id: todoId++, text: action.payload });
     },
     remove: (state, action) => {
       state.todo = state.todo.filter((el) => el.id !== action.payload);
@@ -39,4 +53,4 @@ const todoActionSlice = createSlice({
 });
 export const { add, remove } = todoActionSlice.actions;
 export default todoActionSlice;
-export { loginRequest };
+export { loginRequest, removeRequest };
