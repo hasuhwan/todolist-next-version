@@ -1,6 +1,7 @@
 import Todo from "../../src/components/todo/todo";
 import Header from "../../src/components/header";
 import Footer from "../../src/components/footer";
+import TodoInput from "../../src/components/todo/todoInput";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 const AuthenticatedContainer = styled.div`
@@ -21,12 +22,12 @@ const TodoList = styled.li`
 
 function Authenticated() {
   const { username, todo, userid } = useSelector((state) => state.todoAction);
-
   return (
     <>
       <Header />
       <AuthenticatedContainer>
         <Welcome>반갑습니다 {username}님</Welcome>
+        <TodoInput userid={userid} />
         <TodoList>
           {todo.map((el) => {
             return (

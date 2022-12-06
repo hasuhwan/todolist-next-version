@@ -4,6 +4,8 @@ import { loginRequest } from "../src/module/todoActionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { toggle } from "../src/module/signBooleanSlice";
+import SignIn from "./signin/signIn";
 
 const HomeContainer = styled.div`
   background-color: yellow;
@@ -27,27 +29,46 @@ const LoginForm = styled.form`
 export default function Home() {
   const { register, handleSubmit, reset } = useForm();
   const user = useSelector((state) => state.todoAction);
+  const signIn = useSelector((state) => state.signBoolean);
   const dispatch = useDispatch();
   const router = useRouter();
-  const onSubmit = (data) => {
-    dispatch(loginRequest(data));
+  const onSubmit = async (data) => {
+    const verfiy = await dispatch(loginRequest(data)).then(
+      (data) => data.payload
+    );
+    if (verfiy === "") {
+      alert("확인하세요");
+    }
     reset();
   };
   const onError = (e) => {
     console.log(e);
   };
+
   useEffect(() => {
     if (user.userid !== undefined) {
-      router.push("/todo/authenticated", `/${user.userid}`);
+      router.push(
+        "/todo/authenticated",
+        `/todo/authenticated/?userid=${user.userid}`
+      );
     }
   }, [user]);
   return (
     <HomeContainer>
-      <LoginForm onSubmit={handleSubmit(onSubmit, onError)}>
-        <LoginInput {...register("userid")} required />
-        <LoginInput {...register("password")} required />
-        <LoginSubmit type="submit" />
-      </LoginForm>
+      {signIn.bool === true ? (
+        <SignIn />
+      ) : (
+        <LoginForm onSubmit={handleSubmit(onSubmit, onError)}>
+          <LoginInput {...register("userid")} required />
+          <LoginInput {...register("password")} required />
+          <LoginSubmit
+            type="button"
+            value="회원가입"
+            onClick={() => dispatch(toggle(signIn.bool))}
+          />
+          <LoginSubmit type="submit" />
+        </LoginForm>
+      )}
     </HomeContainer>
   );
 }
