@@ -4,14 +4,26 @@ import axios from "axios";
 const loginRequest = createAsyncThunk(
   "todoActionSlice/loginRequest",
   async (data) => {
-    try {
-      const response = await axios
-        .post(process.env.NEXT_PUBLIC_API_URL + "api/loginRequest", data)
-        .then((data) => data);
-      const getUser = await response.data;
-      return getUser;
-    } catch (e) {
-      console.error(e);
+    if (data !== undefined) {
+      try {
+        const response = await axios
+          .post(process.env.NEXT_PUBLIC_API_URL + "api/loginRequest", data)
+          .then((data) => data);
+        const getUser = await response.data;
+        return getUser;
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      try {
+        const response = await axios
+          .get(process.env.NEXT_PUBLIC_API_URL + "api/loginRequest")
+          .then((data) => data);
+        const getUser = await response.data;
+        return getUser;
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 );
@@ -58,9 +70,9 @@ const signInRequest = createAsyncThunk(
           userid,
           password,
         })
-        .then((data) => data);
+        .then((data) => console.log(data));
     } catch (e) {
-      console.error(e);
+      return "";
     }
   }
 );

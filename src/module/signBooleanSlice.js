@@ -4,7 +4,7 @@ const signBooleanSlice = createSlice({
   initialState: { bool: false },
   reducers: {
     toggle: (state, action) => {
-      const { bool } = action.payload;
+      const bool = action.payload;
       state.bool = !bool;
     },
   },

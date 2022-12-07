@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { add } from "../../module/todoActionSlice";
 import { addRequest } from "../../module/todoActionSlice";
-import uuidv4 from "../../../uuid";
+import uuidv4 from "../../../func/uuid";
 const TodoAddForm = styled.form``;
 const TodoAddInput = styled.input``;
 const TodoAddSubmit = styled.input``;
