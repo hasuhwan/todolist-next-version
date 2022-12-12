@@ -1,4 +1,3 @@
-import userData from "../../data/userData";
 const { MongoClient } = require("mongodb");
 
 export default async function removeRequest(req, res) {
@@ -14,18 +13,10 @@ export default async function removeRequest(req, res) {
       { $pull: { todo: { id: id } } }
     );
 
-    res.status(201);
+    res.status(200);
   } catch (e) {
     console.error(e);
   } finally {
     await client.close();
   }
-  for (let i = 0; i < userData.length; i++) {
-    if (userData[i].userid === userid) {
-      userData[i].todo = userData[i].todo.filter((el) => el.id !== id);
-      break;
-    }
-  }
-
-  res.status(204);
 }

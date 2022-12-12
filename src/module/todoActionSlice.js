@@ -29,6 +29,20 @@ const loginRequest = createAsyncThunk(
   }
 );
 
+const logoutRequest = createAsyncThunk(
+  "todoActionSlice/logoutRequest",
+  async () => {
+    try {
+      const data = await axios
+        .get(process.env.NEXT_PUBLIC_API_URL + "api/logoutRequest")
+        .then((response) => response.data);
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+);
+
 const removeRequest = createAsyncThunk(
   "todoActionSlice/removeRequest",
   async (data) => {
@@ -103,4 +117,10 @@ const todoActionSlice = createSlice({
 });
 export const { add, remove } = todoActionSlice.actions;
 export default todoActionSlice;
-export { loginRequest, removeRequest, addRequest, signInRequest };
+export {
+  loginRequest,
+  removeRequest,
+  addRequest,
+  signInRequest,
+  logoutRequest,
+};

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { loginRequest } from "../../src/module/todoActionSlice";
+import { loginRequest, logoutRequest } from "../../src/module/todoActionSlice";
 import { Fragment } from "react";
 const AuthenticatedContainer = styled.div`
   height: 100vh;
@@ -23,6 +23,7 @@ const TodoList = styled.li`
   display: flex;
   flex-direction: column;
 `;
+const LogOutButton = styled.button``;
 
 function Authenticated() {
   const { username, todo, userid } = useSelector((state) => state.todoAction);
@@ -61,6 +62,18 @@ function Authenticated() {
                 );
               })}
             </TodoList>
+            <LogOutButton
+              onClick={async () => {
+                const response = await dispatch(logoutRequest()).then(
+                  (data) => data.payload
+                );
+                if (response === "success") {
+                  router.push("/");
+                }
+              }}
+            >
+              LogOut
+            </LogOutButton>
           </AuthenticatedContainer>
           <Footer />
         </Fragment>
