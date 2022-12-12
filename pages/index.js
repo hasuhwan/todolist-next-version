@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { loginRequest, signInRequest } from "../src/module/todoActionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { toggle } from "../src/module/signBooleanSlice";
-import axios from "axios";
 
 const HomeContainer = styled.div`
   background-color: yellow;
@@ -54,6 +54,7 @@ export default function Home({}) {
     const verfiy = await dispatch(loginRequest(data)).then(
       (data) => data.payload
     );
+
     if (verfiy === "") {
       alert("확인하세요");
     } else if (verfiy !== "") {
@@ -64,19 +65,25 @@ export default function Home({}) {
   };
   const onSignInHandle = async (data) => {
     const verfiy = await dispatch(signInRequest(data)).then(
-      (data) => data.payload
+      (data) => data.payload.data
     );
-
     if (verfiy === "") {
       alert("중복된 아이디 입니다.");
     } else {
-      reset();
       dispatch(toggle(signIn.bool));
     }
+    reset();
   };
   const onError = (e) => {
     console.log(e);
   };
+  useEffect(() => {
+    dispatch(loginRequest()).then((data) => {
+      if (data.payload !== "") {
+        router.push(`/todo/${data.payload.userid}`);
+      }
+    });
+  }, []);
 
   return (
     <HomeContainer>

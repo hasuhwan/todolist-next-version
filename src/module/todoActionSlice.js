@@ -19,6 +19,7 @@ const loginRequest = createAsyncThunk(
         const response = await axios
           .get(process.env.NEXT_PUBLIC_API_URL + "api/loginRequest")
           .then((data) => data);
+
         const getUser = await response.data;
         return getUser;
       } catch (e) {
@@ -36,7 +37,7 @@ const removeRequest = createAsyncThunk(
         .delete(process.env.NEXT_PUBLIC_API_URL + "api/removeRequest", {
           data: data,
         })
-        .then((data) => console.log(data));
+        .then((data) => data);
     } catch (e) {
       console.error(e);
     }
@@ -70,7 +71,8 @@ const signInRequest = createAsyncThunk(
           userid,
           password,
         })
-        .then((data) => console.log(data));
+        .then((data) => data);
+      return response;
     } catch (e) {
       return "";
     }

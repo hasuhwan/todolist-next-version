@@ -1,4 +1,3 @@
-import userData from "../../data/userData";
 const { MongoClient } = require("mongodb");
 export default async function signInRequest(req, res) {
   const { username, userid, password } = req.body;
@@ -8,13 +7,18 @@ export default async function signInRequest(req, res) {
     await client.connect();
     const db = client.db("users");
     const usersCollection = db.collection("users");
-    const insertUser = await usersCollection.insertOne({
-      username,
-      userid,
-      password,
-      todo: [],
-    });
-    console.log(insertUser); //insertone 정보 넣기 // findone 찾기
+    const verfiyId = await usersCollection.find({ userid: userid }).toArray();
+    if (verfiyId.length !== 0) {
+      res.send("");
+    } else {
+      const insertUser = await usersCollection.insertOne({
+        username,
+        userid,
+        password,
+        todo: [],
+      });
+      res.status(201).json(insertUser);
+    }
   } catch (e) {
     console.error(e);
   } finally {
