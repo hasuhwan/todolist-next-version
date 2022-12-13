@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { loginRequest, logoutRequest } from "../../src/module/todoActionSlice";
 import { Fragment } from "react";
+import { RootState } from "../../src/module/store";
 const AuthenticatedContainer = styled.div`
   height: 100vh;
   width: 100vw;
@@ -26,7 +27,9 @@ const TodoList = styled.li`
 const LogOutButton = styled.button``;
 
 function Authenticated() {
-  const { username, todo, userid } = useSelector((state) => state.todoAction);
+  const { username, todo, userid } = useSelector(
+    (state: RootState) => state.todoAction
+  );
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const router = useRouter();

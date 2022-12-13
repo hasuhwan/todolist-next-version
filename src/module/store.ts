@@ -11,5 +11,9 @@ const makeStore = () => {
     },
   });
 };
-const wrapper = createWrapper(makeStore);
+
+export type RootStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<RootStore["getState"]>;
+export type AppDispatch = ReturnType<RootStore["dispatch"]>;
+const wrapper = createWrapper<RootStore>(makeStore);
 export default wrapper;

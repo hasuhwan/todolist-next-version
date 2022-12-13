@@ -8,13 +8,17 @@ const TodoComponet = styled.span`
   font-size: 2em;
 `;
 const TodoRemoveButton = styled.input``;
-
-function Todo({ id, todoText, userid }) {
+interface propsTypes {
+  id: string;
+  todoText: string;
+  userid: string;
+}
+function Todo({ id, todoText, userid }: propsTypes) {
   const dispatch = useDispatch();
   const onClickHandle = useCallback((id) => {
     dispatch(removeRequest({ userid, id }));
     dispatch(remove(id));
-  });
+  }, []);
   return (
     <TodoContainter>
       <TodoComponet>{todoText}</TodoComponet>

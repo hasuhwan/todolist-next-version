@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { toggle } from "../src/module/signBooleanSlice";
+import { RootState } from "../src/module/store";
 
 const HomeContainer = styled.div`
   background-color: yellow;
@@ -47,7 +48,7 @@ const SignInForm = styled.form`
 
 export default function Home({}) {
   const { register, handleSubmit, reset } = useForm();
-  const signIn = useSelector((state) => state.signBoolean);
+  const signIn = useSelector((state: RootState) => state.signBoolean);
   const dispatch = useDispatch();
   const router = useRouter();
   const onSubmit = async (data) => {

@@ -1,9 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const loginRequest = createAsyncThunk(
   "todoActionSlice/loginRequest",
-  async (data) => {
+  async (data: { userid: string; password: string }) => {
     if (data !== undefined) {
       try {
         const response = await axios
@@ -33,7 +33,7 @@ const logoutRequest = createAsyncThunk(
   "todoActionSlice/logoutRequest",
   async () => {
     try {
-      const data = await axios
+      const data: string = await axios
         .get(process.env.NEXT_PUBLIC_API_URL + "api/logoutRequest")
         .then((response) => response.data);
       return data;
@@ -57,16 +57,21 @@ const removeRequest = createAsyncThunk(
     }
   }
 );
+export interface Iadd {
+  text: string;
+  userid: string;
+  id: string;
+}
 const addRequest = createAsyncThunk(
   "todoActionSlice/addRequest",
-  async (data) => {
-    const { todotext, userid, todoid } = data;
+  async (data: Iadd) => {
+    const { text, userid, id } = data;
     try {
       const response = await axios
         .post(process.env.NEXT_PUBLIC_API_URL + "api/addRequest", {
-          todotext,
+          text,
           userid,
-          todoid,
+          id,
         })
         .then((data) => data);
     } catch (e) {
@@ -74,9 +79,14 @@ const addRequest = createAsyncThunk(
     }
   }
 );
+interface Isign {
+  username: string;
+  userid: string;
+  password: string;
+}
 const signInRequest = createAsyncThunk(
   "todoActionSlice/signInRequest",
-  async (data) => {
+  async (data: Isign) => {
     const { username, userid, password } = data;
     try {
       const response = await axios
@@ -92,16 +102,29 @@ const signInRequest = createAsyncThunk(
     }
   }
 );
-
+interface ItodoInitial {
+  id?: string;
+  text?: string;
+}
+interface IUserInitial {
+  username: string;
+  userid: string;
+  todo: ItodoInitial[];
+}
+const initialState: IUserInitial = {
+  username: "",
+  userid: "",
+  todo: [],
+};
 const todoActionSlice = createSlice({
   name: "todoActionSlice",
-  initialState: {},
+  initialState,
   reducers: {
-    add: (state, action) => {
-      const { id, todotext } = action.payload;
-      state.todo = state.todo.concat({ id: id, text: todotext });
+    add: (state: IUserInitial, action: PayloadAction<ItodoInitial>) => {
+      const { id, text } = action.payload;
+      state.todo = state.todo.concat({ id: id, text: text });
     },
-    remove: (state, action) => {
+    remove: (state: IUserInitial, action: PayloadAction<ItodoInitial>) => {
       state.todo = state.todo.filter((el) => el.id !== action.payload);
     },
   },

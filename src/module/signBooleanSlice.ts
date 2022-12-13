@@ -1,9 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+interface initialBool {
+  bool: boolean;
+}
+const initialState: initialBool = { bool: false };
 const signBooleanSlice = createSlice({
   name: "signBooleanSlice",
-  initialState: { bool: false },
+  initialState,
   reducers: {
-    toggle: (state, action) => {
+    toggle: (state, action: PayloadAction<boolean>) => {
       const bool = action.payload;
       state.bool = !bool;
     },
