@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+
 import { useCallback } from "react";
 import { remove } from "../../module/todoActionSlice";
 import { removeRequest } from "../../module/todoActionSlice";
+import { useAppDispatch } from "../../module/store";
 const TodoContainter = styled.div``;
 const TodoComponet = styled.span`
   font-size: 2em;
@@ -14,8 +15,8 @@ interface propsTypes {
   userid: string;
 }
 function Todo({ id, todoText, userid }: propsTypes) {
-  const dispatch = useDispatch();
-  const onClickHandle = useCallback((id) => {
+  const dispatch = useAppDispatch();
+  const onClickHandle = useCallback(() => {
     dispatch(removeRequest({ userid, id }));
     dispatch(remove(id));
   }, []);
@@ -24,7 +25,7 @@ function Todo({ id, todoText, userid }: propsTypes) {
       <TodoComponet>{todoText}</TodoComponet>
       <TodoRemoveButton
         type="button"
-        onClick={() => onClickHandle(id)}
+        onClick={() => onClickHandle()}
         value="❌"
       />
     </TodoContainter>

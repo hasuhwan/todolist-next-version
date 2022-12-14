@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { loginRequest, signInRequest } from "../src/module/todoActionSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../src/module/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { toggle } from "../src/module/signBooleanSlice";
@@ -49,7 +50,7 @@ const SignInForm = styled.form`
 export default function Home({}) {
   const { register, handleSubmit, reset } = useForm();
   const signIn = useSelector((state: RootState) => state.signBoolean);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const onSubmit = async (data) => {
     const verfiy = await dispatch(loginRequest(data)).then(
@@ -79,7 +80,7 @@ export default function Home({}) {
     console.log(e);
   };
   useEffect(() => {
-    dispatch(loginRequest()).then((data) => {
+    dispatch(loginRequest("")).then((data) => {
       if (data.payload !== "") {
         router.push(`/todo/${data.payload.userid}`);
       }

@@ -3,8 +3,8 @@ import axios from "axios";
 
 const loginRequest = createAsyncThunk(
   "todoActionSlice/loginRequest",
-  async (data: { userid: string; password: string }) => {
-    if (data !== undefined) {
+  async (data?: { userid: string; password: string } | "") => {
+    if (data !== "") {
       try {
         const response = await axios
           .post(process.env.NEXT_PUBLIC_API_URL + "api/loginRequest", data)
@@ -45,7 +45,7 @@ const logoutRequest = createAsyncThunk(
 
 const removeRequest = createAsyncThunk(
   "todoActionSlice/removeRequest",
-  async (data) => {
+  async (data: { userid: string; id: string }) => {
     try {
       const response = await axios
         .delete(process.env.NEXT_PUBLIC_API_URL + "api/removeRequest", {
@@ -120,11 +120,14 @@ const todoActionSlice = createSlice({
   name: "todoActionSlice",
   initialState,
   reducers: {
-    add: (state: IUserInitial, action: PayloadAction<ItodoInitial>) => {
+    add: (state: IUserInitial, action: PayloadAction<ItodoInitial>): void => {
       const { id, text } = action.payload;
       state.todo = state.todo.concat({ id: id, text: text });
     },
-    remove: (state: IUserInitial, action: PayloadAction<ItodoInitial>) => {
+    remove: (
+      state: IUserInitial,
+      action: PayloadAction<ItodoInitial>
+    ): void => {
       state.todo = state.todo.filter((el) => el.id !== action.payload);
     },
   },

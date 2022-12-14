@@ -2,7 +2,8 @@ import Todo from "../../src/components/todo/todo";
 import Header from "../../src/components/header";
 import Footer from "../../src/components/footer";
 import TodoInput from "../../src/components/todo/todoInput";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../src/module/store";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
@@ -31,10 +32,10 @@ function Authenticated() {
     (state: RootState) => state.todoAction
   );
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   useEffect(() => {
-    dispatch(loginRequest()).then((data) => {
+    dispatch(loginRequest("")).then((data) => {
       if (data.payload === "") {
         router.push("/");
       } else {

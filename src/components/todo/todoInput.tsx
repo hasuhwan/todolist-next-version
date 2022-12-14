@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../module/store";
 import { add, Iadd } from "../../module/todoActionSlice";
 import { addRequest } from "../../module/todoActionSlice";
 import uuidv4 from "../../../func/uuid";
@@ -9,12 +9,12 @@ const TodoAddInput = styled.input``;
 const TodoAddSubmit = styled.input``;
 function TodoInput({ userid }) {
   const { register, handleSubmit, reset } = useForm();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const onSubmit = (data: Iadd) => {
     const id = uuidv4();
     const { text } = data;
     dispatch(addRequest({ text, userid, id }));
-    dispatch(add({ todotext, todoid }));
+    dispatch(add({ text, id }));
     reset();
   };
   const onError = (e) => {
@@ -22,7 +22,7 @@ function TodoInput({ userid }) {
   };
   return (
     <TodoAddForm onSubmit={handleSubmit(onSubmit, onError)}>
-      <TodoAddInput {...register("todotext")} required />
+      <TodoAddInput {...register("text")} required />
       <TodoAddSubmit type="submit" />
     </TodoAddForm>
   );
