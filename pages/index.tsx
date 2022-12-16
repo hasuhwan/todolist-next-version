@@ -46,13 +46,17 @@ const SignInForm = styled.form`
   display: flex;
   flex-direction: column;
 `;
-
+interface Ilogin {
+  username?: string;
+  userid: string;
+  password: string;
+}
 export default function Home({}) {
   const { register, handleSubmit, reset } = useForm();
   const signIn = useSelector((state: RootState) => state.signBoolean);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: Ilogin) => {
     const verfiy = await dispatch(loginRequest(data)).then(
       (data) => data.payload
     );
@@ -66,9 +70,10 @@ export default function Home({}) {
     reset();
   };
   const onSignInHandle = async (data) => {
-    const verfiy = await dispatch(signInRequest(data)).then(
+    const verfiy: string = await dispatch(signInRequest(data)).then(
       (data) => data.payload.data
     );
+    console.log(verfiy);
     if (verfiy === "") {
       alert("중복된 아이디 입니다.");
     } else {
@@ -76,7 +81,7 @@ export default function Home({}) {
     }
     reset();
   };
-  const onError = (e) => {
+  const onError = (e): void => {
     console.log(e);
   };
   useEffect(() => {

@@ -11,13 +11,13 @@ export default async function signInRequest(req, res) {
     if (verfiyId.length !== 0) {
       res.send("");
     } else {
-      const insertUser = await usersCollection.insertOne({
+      await usersCollection.insertOne({
         username,
         userid,
         password,
         todo: [],
       });
-      res.status(201).json(insertUser);
+      res.status(201).json("insertUser");
     }
   } catch (e) {
     console.error(e);

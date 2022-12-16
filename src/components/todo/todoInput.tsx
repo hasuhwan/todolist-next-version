@@ -10,14 +10,14 @@ const TodoAddSubmit = styled.input``;
 function TodoInput({ userid }) {
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useAppDispatch();
-  const onSubmit = (data: Iadd) => {
+  const onSubmit = (data: Iadd): void => {
     const id = uuidv4();
     const { text } = data;
     dispatch(addRequest({ text, userid, id }));
     dispatch(add({ text, id }));
     reset();
   };
-  const onError = (e) => {
+  const onError = (e): void => {
     console.log(e);
   };
   return (

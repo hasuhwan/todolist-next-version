@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 const loginRequest = createAsyncThunk(
   "todoActionSlice/loginRequest",
@@ -47,11 +47,11 @@ const removeRequest = createAsyncThunk(
   "todoActionSlice/removeRequest",
   async (data: { userid: string; id: string }) => {
     try {
-      const response = await axios
+      const response: string = await axios
         .delete(process.env.NEXT_PUBLIC_API_URL + "api/removeRequest", {
           data: data,
         })
-        .then((data) => data);
+        .then((data) => data.data);
     } catch (e) {
       console.error(e);
     }
@@ -89,7 +89,7 @@ const signInRequest = createAsyncThunk(
   async (data: Isign) => {
     const { username, userid, password } = data;
     try {
-      const response = await axios
+      const response: AxiosResponse = await axios
         .post(process.env.NEXT_PUBLIC_API_URL + "api/signInRequest", {
           username,
           userid,
@@ -132,13 +132,16 @@ const todoActionSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(loginRequest.fulfilled, (state, { payload }) => {
-      if (payload !== undefined) {
-        state.username = payload.username;
-        state.todo = payload.todo;
-        state.userid = payload.userid;
+    builder.addCase(
+      loginRequest.fulfilled,
+      (state: IUserInitial, { payload }) => {
+        if (payload !== undefined) {
+          state.username = payload.username;
+          state.todo = payload.todo;
+          state.userid = payload.userid;
+        }
       }
-    });
+    );
   },
 });
 export const { add, remove } = todoActionSlice.actions;
